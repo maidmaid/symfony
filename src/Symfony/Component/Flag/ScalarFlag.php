@@ -22,7 +22,7 @@ class ScalarFlag extends AbstractFlag
 
     public function __toString()
     {
-        return implode(' | ', array_keys($constants = $this->getConstants(true) ?: $this->flags));
+        return implode(' | ', array_keys($this->getConstants(true) ?: $this->flags));
     }
 
     public function add($flag)
