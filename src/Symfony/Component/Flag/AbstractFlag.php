@@ -13,13 +13,14 @@ namespace Symfony\Component\Flag;
 
 abstract class AbstractFlag implements FlagInterface
 {
+    protected $flags;
     protected $from;
     protected $prefix;
-    protected $flags;
     protected $constants = null;
 
-    public function __construct($from = false, $prefix = '')
+    public function __construct($flags, $from = false, $prefix = '')
     {
+        $this->set($flags);
         $this->from = $from;
         $this->prefix = $prefix;
     }

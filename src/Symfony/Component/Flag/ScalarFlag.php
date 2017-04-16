@@ -13,11 +13,9 @@ namespace Symfony\Component\Flag;
 
 class ScalarFlag extends AbstractFlag
 {
-    public function __construct($from = false, $prefix = '')
+    public function __construct($flags = array(), $from = false, $prefix = '')
     {
-        parent::__construct($from, $prefix);
-
-        $this->flags = array();
+        parent::__construct($flags, $from, $prefix);
     }
 
     public function __toString()

@@ -13,7 +13,7 @@ namespace Symfony\Component\Flag;
 
 interface FlagInterface
 {
-    public function __construct($from, $prefix);
+    public function __construct($flags, $from, $prefix);
     public function __toString();
     public function set($flags);
     public function get();

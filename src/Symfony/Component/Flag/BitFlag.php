@@ -15,6 +15,11 @@ class BitFlag extends AbstractFlag
 {
     const FLAG_MAX_VALUE = 2147483647; // 2^31−1.
 
+    public function __construct($flags = 0, $from = false, $prefix = '')
+    {
+        parent::__construct($flags, $from, $prefix);
+    }
+
     function __toString()
     {
         $str = sprintf('0b%b [dec: %s]', $this->flags, $this->flags);
