@@ -44,18 +44,7 @@ abstract class AbstractFlag implements FlagInterface
         }
 
         if (null === $this->constants) {
-            $this->constants = class_exists($this->from)
-                ? (new \ReflectionClass($this->from))->getConstants()
-                : get_defined_constants()
-            ;
-
-            if ('' !== $this->prefix) {
-                foreach ($this->constants as $constant => $value) {
-                    if (0 !== strpos($constant, $this->prefix)) {
-                        unset($this->constants[$constant]);
-                    }
-                }
-            }
+            $this->constants = self::search($this->from, $this->prefix);
         }
 
         if ($flagged) {
@@ -63,5 +52,23 @@ abstract class AbstractFlag implements FlagInterface
         }
 
         return $this->constants;
+    }
+
+    static public function search($from = null, $prefix = '')
+    {
+        $constants = class_exists($from)
+            ? (new \ReflectionClass($from))->getConstants()
+            : get_defined_constants()
+        ;
+
+        if ('' !== $prefix) {
+            foreach ($constants as $constant => $value) {
+                if (0 !== strpos($constant, $prefix)) {
+                    unset($constants[$constant]);
+                }
+            }
+        }
+
+        return $constants;
     }
 }
