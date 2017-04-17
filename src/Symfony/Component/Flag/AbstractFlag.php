@@ -28,13 +28,12 @@ abstract class AbstractFlag implements FlagInterface
 
     function __toString()
     {
-        $str = sprintf('0b%b [dec: %s]', $this->mask, $this->mask);
-
-        if ($flags = $this->getFlags(true)) {
-            $str .= sprintf(' [flags: %s]', implode(' | ', array_keys($flags)));
-        }
-
-        return $str;
+        return sprintf(
+            '[dec: %s] [bin: %b] [flags: %s]',
+            $this->mask,
+            $this->mask,
+            implode(' | ', array_keys($this->getFlags(true)))
+        );
     }
 
     public function get()
