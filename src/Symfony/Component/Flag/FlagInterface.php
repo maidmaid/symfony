@@ -15,7 +15,7 @@ interface FlagInterface
 {
     public function __construct($from, $prefix, $bitfield);
     public function __toString();
-    public function set($flags);
+    public function set($bitfield);
     public function get();
     public function add($flag);
     public function remove($flag);

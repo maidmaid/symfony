@@ -18,13 +18,11 @@ class Flag
      */
     static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
     {
-        // TODO handle exceptions
-
         $onlyInt = true;
-        $forceToBinerize = false;
+        $forceToBinarize = false;
 
         if (false === $from) {
-            $forceToBinerize = true;
+            $forceToBinarize = true;
         } else {
             foreach (AbstractFlag::search($from, $prefix) as $value) {
                 if (!is_int($value)) {
@@ -35,9 +33,14 @@ class Flag
         }
 
         switch (true) {
-            case !$forceToBinerize && $onlyInt && !$hierarchical: $class = BitFlag::class; break;
-            case !$forceToBinerize && $onlyInt && $hierarchical: $class = HierarchicalFlag::class; break;
-            default: $class = BinarizedFlag::class;
+            case !$forceToBinarize && $onlyInt && !$hierarchical:
+                $class = BitFlag::class;
+                break;
+            case !$forceToBinarize && $onlyInt && $hierarchical:
+                $class = HierarchicalFlag::class;
+                break;
+            default:
+                $class = BinarizedFlag::class;
         }
 
         return new $class($from, $prefix, $bitfield);
