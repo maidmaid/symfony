@@ -13,45 +13,32 @@ namespace Symfony\Component\Flag;
 
 class BitFlag extends AbstractFlag
 {
-    const FLAG_MAX_VALUE = 2147483647; // 2^31−1.
-
-    function __toString()
-    {
-        $str = sprintf('0b%b [dec: %s]', $this->flags, $this->flags);
-
-        if ($constants = $this->getConstants(true)) {
-            $str .= sprintf(' [const: %s]', implode(' | ', array_keys($constants)));
-        }
-
-        return $str;
-    }
-
-    public function set($flags)
+    public function set($mask)
     {
         // TODO throw InvalidArgumentException if !is_int
         // TODO throw InvalidArgumentException if > FLAG_MAX_VALUE
 
-        $this->flags = $flags;
+        $this->mask = $mask;
 
         return $this;
     }
 
     public function add($flag)
     {
-        $this->flags |= $flag;
+        $this->mask |= $flag;
 
         return $this;
     }
 
     public function remove($flag)
     {
-        $this->flags &= ~$flag;
+        $this->mask &= ~$flag;
 
         return $this;
     }
 
     public function has($flags)
     {
-        return ($this->flags & $flags) === $flags;
+        return ($this->mask & $flags) === $flags;
     }
 }

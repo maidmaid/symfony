@@ -20,4 +20,5 @@ interface FlagInterface
     public function add($flag);
     public function remove($flag);
     public function has($flag);
+    public function getFlags($flagged);
 }

@@ -11,38 +11,41 @@
 
 namespace Symfony\Component\Flag;
 
-class ScalarFlag extends AbstractFlag
+class ScalarFlag extends BitFlag
 {
-    public function __construct($from = false, $prefix = '')
-    {
-        parent::__construct($from, $prefix);
+    private $indexed = null;
+    private $binarized = array();
 
-        $this->flags = array();
-    }
-
-    public function __toString()
+    private function binarize($flag)
     {
-        return implode(' | ', array_keys($this->getConstants(true) ?: $this->flags));
+        if (null === $this->indexed) {
+            $this->indexed = array_flip(array_values($this->getFlags()));
+        }
+
+        if (!isset($this->binarized[$flag])) {
+            $this->binarized[$flag] = 1 << $this->indexed[$flag];
+        }
+
+        return $this->binarized[$flag];
     }
 
     public function add($flag)
     {
-        $this->flags[$flag] = true;
+        if (false === $this->from && !isset($this->flags[$flag])) {
+            $this->flags[$flag] = $flag;
+            $this->indexed[$flag] = count($this->indexed);
+        }
 
-        return $this;
+        return parent::add($this->binarize($flag));
     }
 
     public function remove($flag)
     {
-        if (isset($this->flags[$flag])) {
-            unset($this->flags[$flag]);
-        }
-
-        return $this;
+        return parent::remove($this->binarize($flag));
     }
 
-    public function has($flag)
+    public function has($flags)
     {
-        return isset($this->flags[$flag]);
+        return parent::has($this->binarize($flags));
     }
 }

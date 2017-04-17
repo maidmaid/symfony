@@ -15,8 +15,10 @@ abstract class AbstractFlag implements FlagInterface
 {
     protected $from;
     protected $prefix;
-    protected $flags;
-    protected $constants = null;
+    protected $mask;
+    protected $flags = null;
+
+    const FLAG_MAX_VALUE = 2147483647; // 2^31−1.
 
     public function __construct($from = false, $prefix = '')
     {
@@ -24,33 +26,44 @@ abstract class AbstractFlag implements FlagInterface
         $this->prefix = $prefix;
     }
 
-    public function get()
+    function __toString()
     {
-        return $this->flags;
+        $str = sprintf('0b%b [dec: %s]', $this->mask, $this->mask);
+
+        if ($flags = $this->getFlags(true)) {
+            $str .= sprintf(' [flags: %s]', implode(' | ', array_keys($flags)));
+        }
+
+        return $str;
     }
 
-    public function set($flags)
+    public function get()
     {
-        $this->flags = $flags;
+        return $this->mask;
+    }
+
+    public function set($mask)
+    {
+        $this->mask = $mask;
 
         return $this;
     }
 
-    public function getConstants($flagged = false)
+    public function getFlags($flagged = false)
     {
-        if (false === $this->from) {
-            return array();
+        if (null === $this->flags) {
+            $this->flags = array();
         }
 
-        if (null === $this->constants) {
-            $this->constants = self::search($this->from, $this->prefix);
+        if (false !== $this->from) {
+            $this->flags = self::search($this->from, $this->prefix);
         }
 
         if ($flagged) {
-            return array_filter($this->getConstants(), function ($flag)  { return $this->has($flag); });
+            return array_filter($this->getFlags(), function ($flag)  { return $this->has($flag); });
         }
 
-        return $this->constants;
+        return $this->flags;
     }
 
     static public function search($from = null, $prefix = '')
