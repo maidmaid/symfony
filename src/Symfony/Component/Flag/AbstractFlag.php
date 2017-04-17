@@ -29,10 +29,12 @@ abstract class AbstractFlag implements FlagInterface
 
     function __toString()
     {
+        $this->prefix
         return sprintf(
-            '[dec: %s] [bin: %b] [flags: %s]',
+            '[dec: %s] [bin: %b] [%s: %s]',
             $this->bitfield,
             $this->bitfield,
+            $this->prefix ?: 'flags',
             implode(' | ', array_keys($this->getFlags(true)))
         );
     }
