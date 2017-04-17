@@ -36,7 +36,9 @@ class BinarizedFlag extends BitFlag
             $this->indexed[$flag] = count($this->indexed);
         }
 
-        return parent::add($this->binarize($flag));
+        $this->mask |= $this->binarize($flag);
+
+        return $this;
     }
 
     public function remove($flag)

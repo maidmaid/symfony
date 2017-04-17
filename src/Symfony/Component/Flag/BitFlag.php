@@ -25,6 +25,10 @@ class BitFlag extends AbstractFlag
 
     public function add($flag)
     {
+        if (false === $this->from && !isset($this->flags[$flag])) {
+            $this->flags[$flag] = $flag;
+        }
+
         $this->mask |= $flag;
 
         return $this;
