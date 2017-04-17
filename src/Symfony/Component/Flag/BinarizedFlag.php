@@ -22,6 +22,10 @@ class BinarizedFlag extends Flag
             $this->indexed = array_flip(array_values($this->getFlags()));
         }
 
+        if (!isset($this->indexed[$flag])) {
+            $this->indexed[$flag] = count($this->indexed);
+        }
+
         if (!isset($this->binarized[$flag])) {
             $this->binarized[$flag] = 1 << $this->indexed[$flag];
         }
@@ -33,7 +37,6 @@ class BinarizedFlag extends Flag
     {
         if (false === $this->from && !isset($this->flags[$flag])) {
             $this->flags[$flag] = $flag;
-            $this->indexed[$flag] = count($this->indexed);
         }
 
         $this->bitfield |= $this->binarize($flag);
