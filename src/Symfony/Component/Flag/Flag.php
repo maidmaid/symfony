@@ -11,38 +11,40 @@
 
 namespace Symfony\Component\Flag;
 
-class Flag
+class Flag extends AbstractFlag
 {
-    /**
-     * @return FlagInterface
-     */
-    static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
+    public function set($bitfield)
     {
-        $onlyInt = true;
-        $forceToBinarize = false;
+        // TODO throw InvalidArgumentException if !is_int
+        // TODO throw InvalidArgumentException if FLAG_MAX_VALUE < bitfield
 
-        if (false === $from) {
-            $forceToBinarize = true;
-        } else {
-            foreach (AbstractFlag::search($from, $prefix) as $value) {
-                if (!is_int($value)) {
-                    $onlyInt = false;
-                    break;
-                }
-            }
+        $this->bitfield = $bitfield;
+
+        return $this;
+    }
+
+    public function add($flag)
+    {
+        // TODO throw InvalidArgumentException if max flags >= flag and has from
+
+        if (false === $this->from && !isset($this->flags[$flag])) {
+            $this->flags[$flag] = $flag;
         }
 
-        switch (true) {
-            case !$forceToBinarize && $onlyInt && !$hierarchical:
-                $class = BitFlag::class;
-                break;
-            case !$forceToBinarize && $onlyInt && $hierarchical:
-                $class = HierarchicalFlag::class;
-                break;
-            default:
-                $class = BinarizedFlag::class;
-        }
+        $this->bitfield |= $flag;
 
-        return new $class($from, $prefix, $bitfield);
+        return $this;
+    }
+
+    public function remove($flag)
+    {
+        $this->bitfield &= ~$flag;
+
+        return $this;
+    }
+
+    public function has($flags)
+    {
+        return ($this->bitfield & $flags) === $flags;
     }
 }

@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Flag;
 
-class BinarizedFlag extends BitFlag
+class BinarizedFlag extends Flag
 {
     private $indexed = null;
     private $binarized = array();

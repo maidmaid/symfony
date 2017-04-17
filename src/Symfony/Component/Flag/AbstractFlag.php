@@ -27,13 +27,48 @@ abstract class AbstractFlag implements FlagInterface
         $this->set($bitfield);
     }
 
+    /**
+     * @return Flag
+     */
+    static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
+    {
+        // TODO throw InvalidArgumentException if $hierarchical && $forceToBinarize
+
+        $onlyInt = true;
+        $forceToBinarize = false;
+
+        if (false === $from) {
+            $forceToBinarize = true;
+        } else {
+            foreach (AbstractFlag::search($from, $prefix) as $value) {
+                if (!is_int($value)) {
+                    $onlyInt = false;
+                    break;
+                }
+            }
+        }
+
+        switch (true) {
+            case !$forceToBinarize && $onlyInt && !$hierarchical:
+                $class = Flag::class;
+                break;
+            case !$forceToBinarize && $onlyInt && $hierarchical:
+                $class = HierarchicalFlag::class;
+                break;
+            default:
+                $class = BinarizedFlag::class;
+        }
+
+        return new $class($from, $prefix, $bitfield);
+    }
+
     function __toString()
     {
         $flags = array_keys($this->getFlags(true));
         $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
 
         return sprintf(
-            '[dec: %s] [bin: %b] [%s: %s]',
+            '[bin: %b] [dec: %s] [%s: %s]',
             $this->bitfield,
             $this->bitfield,
             $this->prefix ? $this->prefix.'*': 'flags',
