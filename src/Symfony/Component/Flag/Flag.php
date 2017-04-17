@@ -20,20 +20,20 @@ class Flag
     {
         // TODO handle exceptions
 
-        $isBit = true;
+        $onlyInt = true;
         if (false !== $from) {
             foreach (AbstractFlag::search($from, $prefix) as $value) {
                 if (!is_int($value)) {
-                    $isBit = false;
+                    $onlyInt = false;
                     break;
                 }
             }
         }
 
         switch (true) {
-            case $isBit && !$hierarchical: $class = BitFlag::class; break;
-            case $isBit && $hierarchical: $class = HierarchicalBitFlag::class; break;
-            default: $class = ScalarFlag::class;
+            case $onlyInt && !$hierarchical: $class = BitFlag::class; break;
+            case $onlyInt && $hierarchical: $class = HierarchicalFlag::class; break;
+            default: $class = BinarizedFlag::class;
         }
 
         return new $class($from, $prefix);

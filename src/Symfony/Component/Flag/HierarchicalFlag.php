@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Flag;
 
-class HierarchicalBitFlag extends BitFlag
+class HierarchicalFlag extends BitFlag
 {
     public function has($flags)
     {
