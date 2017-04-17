@@ -36,7 +36,7 @@ class BinarizedFlag extends BitFlag
             $this->indexed[$flag] = count($this->indexed);
         }
 
-        $this->mask |= $this->binarize($flag);
+        $this->bitfield |= $this->binarize($flag);
 
         return $this;
     }

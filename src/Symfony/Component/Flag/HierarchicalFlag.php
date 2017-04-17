@@ -15,6 +15,6 @@ class HierarchicalFlag extends BitFlag
 {
     public function has($flags)
     {
-        return $flags <= $this->mask;
+        return $flags <= $this->bitfield;
     }
 }

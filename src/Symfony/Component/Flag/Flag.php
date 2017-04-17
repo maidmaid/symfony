@@ -16,12 +16,16 @@ class Flag
     /**
      * @return FlagInterface
      */
-    static public function create($from = false, $prefix = '', $hierarchical = false)
+    static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
     {
         // TODO handle exceptions
 
         $onlyInt = true;
-        if (false !== $from) {
+        $forceToBinerize = false;
+
+        if (false === $from) {
+            $forceToBinerize = true;
+        } else {
             foreach (AbstractFlag::search($from, $prefix) as $value) {
                 if (!is_int($value)) {
                     $onlyInt = false;
@@ -31,11 +35,11 @@ class Flag
         }
 
         switch (true) {
-            case $onlyInt && !$hierarchical: $class = BitFlag::class; break;
-            case $onlyInt && $hierarchical: $class = HierarchicalFlag::class; break;
+            case !$forceToBinerize && $onlyInt && !$hierarchical: $class = BitFlag::class; break;
+            case !$forceToBinerize && $onlyInt && $hierarchical: $class = HierarchicalFlag::class; break;
             default: $class = BinarizedFlag::class;
         }
 
-        return new $class($from, $prefix);
+        return new $class($from, $prefix, $bitfield);
     }
 }

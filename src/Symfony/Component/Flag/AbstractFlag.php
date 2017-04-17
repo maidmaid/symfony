@@ -15,35 +15,36 @@ abstract class AbstractFlag implements FlagInterface
 {
     protected $from;
     protected $prefix;
-    protected $mask;
+    protected $bitfield;
     protected $flags = null;
 
     const FLAG_MAX_VALUE = 2147483647; // 2^31−1.
 
-    public function __construct($from = false, $prefix = '')
+    public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
         $this->from = $from;
         $this->prefix = $prefix;
+        $this->set($bitfield);
     }
 
     function __toString()
     {
         return sprintf(
             '[dec: %s] [bin: %b] [flags: %s]',
-            $this->mask,
-            $this->mask,
+            $this->bitfield,
+            $this->bitfield,
             implode(' | ', array_keys($this->getFlags(true)))
         );
     }
 
     public function get()
     {
-        return $this->mask;
+        return $this->bitfield;
     }
 
-    public function set($mask)
+    public function set($bitfield)
     {
-        $this->mask = $mask;
+        $this->bitfield = $bitfield;
 
         return $this;
     }

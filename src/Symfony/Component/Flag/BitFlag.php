@@ -13,12 +13,12 @@ namespace Symfony\Component\Flag;
 
 class BitFlag extends AbstractFlag
 {
-    public function set($mask)
+    public function set($bitfield)
     {
         // TODO throw InvalidArgumentException if !is_int
         // TODO throw InvalidArgumentException if > FLAG_MAX_VALUE
 
-        $this->mask = $mask;
+        $this->bitfield = $bitfield;
 
         return $this;
     }
@@ -29,20 +29,20 @@ class BitFlag extends AbstractFlag
             $this->flags[$flag] = $flag;
         }
 
-        $this->mask |= $flag;
+        $this->bitfield |= $flag;
 
         return $this;
     }
 
     public function remove($flag)
     {
-        $this->mask &= ~$flag;
+        $this->bitfield &= ~$flag;
 
         return $this;
     }
 
     public function has($flags)
     {
-        return ($this->mask & $flags) === $flags;
+        return ($this->bitfield & $flags) === $flags;
     }
 }
