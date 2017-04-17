@@ -29,13 +29,15 @@ abstract class AbstractFlag implements FlagInterface
 
     function __toString()
     {
-        $this->prefix
+        $flags = array_keys($this->getFlags(true));
+        $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
+
         return sprintf(
             '[dec: %s] [bin: %b] [%s: %s]',
             $this->bitfield,
             $this->bitfield,
-            $this->prefix ?: 'flags',
-            implode(' | ', array_keys($this->getFlags(true)))
+            $this->prefix ? $this->prefix.'*': 'flags',
+            implode(' | ', $this->prefix ? array_map($subPrefix, $flags) : $flags)
         );
     }
 
