@@ -103,6 +103,9 @@ abstract class AbstractFlag implements FlagInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFlags($flagged = false)
     {
         if (null === $this->flags) {

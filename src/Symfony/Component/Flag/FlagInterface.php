@@ -35,5 +35,13 @@ interface FlagInterface
     public function add($flag);
     public function remove($flag);
     public function has($flag);
+
+    /**
+     * Get flags.
+     *
+     * @param bool $flagged Filter for get only flagged flags.
+     *
+     * @return mixed
+     */
     public function getFlags($flagged = false);
 }

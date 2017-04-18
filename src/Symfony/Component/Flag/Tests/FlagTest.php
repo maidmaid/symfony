@@ -49,4 +49,20 @@ class FlagTest extends TestCase
     {
         (new Flag())->set(PHP_INT_MAX * 2);
     }
+
+
+    public function testGetFlags()
+    {
+        $flag = new Flag(Bar::class, 'FLAG_', Bar::FLAG_D);
+
+        $flags = $flag->getFlags();
+        foreach (Bar::getPrefixedFlags() as $expected) {
+            $this->assertArrayHasKey($expected[0], $flags);
+        }
+
+        $flags = $flag->getFlags(true);
+        $this->assertArrayHasKey('FLAG_D', $flags);
+        $this->assertArrayNotHasKey('FLAG_E', $flags);
+        $this->assertArrayNotHasKey('FLAG_F', $flags);
+    }
 }
