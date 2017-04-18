@@ -21,7 +21,7 @@ interface FlagInterface
     /**
      * Constructor.
      *
-     * @param bool   $from     Class from the search flags is made.
+     * @param bool   $from     Class from where the flags searching flags is made.
      * @param string $prefix   Prefix flags.
      * @param int    $bitfield Bitfield value.
      */

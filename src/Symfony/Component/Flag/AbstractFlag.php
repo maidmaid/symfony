@@ -38,8 +38,8 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * Creates dynamically instance of Flag.
      *
-     * @param string|null|bool $from         Class from the search flags is made. Define to null to search flags in
-     *                                       global space. Define to false for standalone use.
+     * @param string|null|bool $from         Class from where the flags searching flags is made. Define to null to
+     *                                       search flags in global space. Define to false for standalone use.
      * @param string           $prefix       Prefix flags from the search flags is made.
      * @param bool             $hierarchical Defines hierarchical flags.
      * @param int              $bitfield     Sets bitfield value.
