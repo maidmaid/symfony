@@ -53,6 +53,14 @@ interface FlagInterface
      * @return $this
      */
     public function add($flag);
+
+    /**
+     * Removes a flag.
+     *
+     * @param int $flag Bitfield to remove.
+     *
+     * @return $this
+     */
     public function remove($flag);
     public function has($flag);
 

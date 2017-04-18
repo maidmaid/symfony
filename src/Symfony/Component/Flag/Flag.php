@@ -56,6 +56,9 @@ class Flag extends AbstractFlag
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function remove($flag)
     {
         $this->set($this->bitfield & ~$flag);

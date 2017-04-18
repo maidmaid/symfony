@@ -102,4 +102,13 @@ class FlagTest extends TestCase
 
         $this->assertNotEquals(Foo::FLAG_C, $flag->get());
     }
+
+    public function testRemove()
+    {
+        $flag = new Flag(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B);
+
+        $this->assertEquals(Foo::FLAG_A | Foo::FLAG_B, $flag->get());
+        $flag->remove(Foo::FLAG_B);
+        $this->assertEquals(Foo::FLAG_A, $flag->get());
+    }
 }
