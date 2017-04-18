@@ -33,6 +33,9 @@ class BinarizedFlag extends Flag
         return $this->binarized[$flag];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function add($flag)
     {
         if (false === $this->from && !isset($this->flags[$flag])) {

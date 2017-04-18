@@ -44,6 +44,14 @@ interface FlagInterface
      * @return int
      */
     public function get();
+
+    /**
+     * Adds a flag.
+     *
+     * @param int $flag Bitfield to add.
+     *
+     * @return $this
+     */
     public function add($flag);
     public function remove($flag);
     public function has($flag);

@@ -40,6 +40,9 @@ class Flag extends AbstractFlag
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function add($flag)
     {
         // TODO throw InvalidArgumentException if max flags >= flag and has from

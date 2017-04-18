@@ -89,4 +89,17 @@ class FlagTest extends TestCase
             array(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B, '[bin: 11] [dec: 3] [FLAG_*: A | B]'),
         );
     }
+
+    public function testAdd()
+    {
+        $flag = new Flag(Foo::class, 'FLAG_');
+
+        $flag->add(Foo::FLAG_A);
+        $this->assertEquals(Foo::FLAG_A, $flag->get());
+
+        $flag->add(Foo::FLAG_B);
+        $this->assertEquals(Foo::FLAG_A | Foo::FLAG_B, $flag->get());
+
+        $this->assertNotEquals(Foo::FLAG_C, $flag->get());
+    }
 }
