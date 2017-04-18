@@ -20,6 +20,9 @@ abstract class AbstractFlag implements FlagInterface
     protected $bitfield;
     protected $flags = null;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
         $this->from = $from;
@@ -94,11 +97,17 @@ abstract class AbstractFlag implements FlagInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get()
     {
         return $this->bitfield;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function set($bitfield)
     {
         $this->bitfield = $bitfield;

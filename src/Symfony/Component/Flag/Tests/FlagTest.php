@@ -13,7 +13,7 @@ class FlagTest extends TestCase
     /**
      * @dataProvider provideBitfields
      */
-    public function testSet($bitfield)
+    public function testSetAndGet($bitfield)
     {
         $flag = (new Flag())->set($bitfield);
 

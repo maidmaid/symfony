@@ -37,6 +37,12 @@ interface FlagInterface
      * @return $this
      */
     public function set($bitfield);
+
+    /**
+     * Gets bitfield value.
+     *
+     * @return int
+     */
     public function get();
     public function add($flag);
     public function remove($flag);
