@@ -3,6 +3,7 @@
 namespace Symfony\Component\Flag\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Flag\AbstractFlag;
 use Symfony\Component\Flag\Flag;
 use Symfony\Component\Flag\Tests\Fixtures\Bar;
 use Symfony\Component\Flag\Tests\Fixtures\Foo;

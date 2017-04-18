@@ -87,6 +87,8 @@ class AbstractFlagTest extends TestCase
     public function provideCreate()
     {
         return array(
+            array(false, '', false, BinarizedFlag::class),
+
             array(null, 'E_', false, Flag::class),
             array(null, 'E_', true, HierarchicalFlag::class),
 
@@ -112,5 +114,16 @@ class AbstractFlagTest extends TestCase
     public function testCreateHierarchicalNoIntFlags()
     {
         AbstractFlag::create(Bar::class, '', true);
+    }
+
+    public function testSetAndGet()
+    {
+        $flag = $this->getMockBuilder(AbstractFlag::class)
+            ->setMethodsExcept(array('set', 'get'))
+            ->getMock()
+        ;
+
+        $flag->set(1);
+        $this->assertEquals(1, $flag->get());
     }
 }
