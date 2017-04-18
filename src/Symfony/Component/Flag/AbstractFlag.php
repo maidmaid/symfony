@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\Flag;
 
+use Symfony\Component\Flag\Exception\InvalidArgumentException;
+
 abstract class AbstractFlag implements FlagInterface
 {
     protected $from;
     protected $prefix;
     protected $bitfield;
     protected $flags = null;
-
-    const FLAG_MAX_VALUE = 2147483647; // 2^31−1.
 
     public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
@@ -28,23 +28,38 @@ abstract class AbstractFlag implements FlagInterface
     }
 
     /**
-     * @return Flag
+     * Creates dynamically instance of Flag.
+     *
+     * @param string|null|bool $from         Class from the search flags is made. Define to null to search flags in
+     *                                       global space. Define to false for standalone use.
+     * @param string           $prefix       Prefix calss from the search flags is made.
+     * @param bool             $hierarchical Defines hierarchical flags.
+     * @param int              $bitfield     Sets bitfield value.
+     *
+     * @return AbstractFlag
+     *
+     * @throws InvalidArgumentException When standalone use is defined as hierarchical.
+     * @throws InvalidArgumentException When no-integer flags is defined as hierarchical.
      */
     static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
     {
-        // TODO throw InvalidArgumentException if $hierarchical && $forceToBinarize
-
         $onlyInt = true;
         $forceToBinarize = false;
 
         if (false === $from) {
+            if ($hierarchical) {
+                throw new InvalidArgumentException('Potential no-integer flags must not be hierarchical.');
+            }
             $forceToBinarize = true;
         } else {
-            foreach (AbstractFlag::search($from, $prefix) as $value) {
+            foreach (self::search($from, $prefix) as $value) {
                 if (!is_int($value)) {
                     $onlyInt = false;
                     break;
                 }
+            }
+            if ($hierarchical && !$onlyInt) {
+                throw new InvalidArgumentException('No-integer flags must not be hierarchical.');
             }
         }
 
@@ -105,11 +120,24 @@ abstract class AbstractFlag implements FlagInterface
         return $this->flags;
     }
 
-    static public function search($from = null, $prefix = '')
+    /**
+     * Searchs flags from class or global space.
+     *
+     * @param null|string $from   Class from the search flags is made. Define to null to search flags in global space.
+     * @param string      $prefix Prefix flags that filter search result.
+     *
+     * @return array Array of flags.
+     */
+    static public function search($from, $prefix = '')
     {
-        $constants = class_exists($from)
-            ? (new \ReflectionClass($from))->getConstants()
-            : get_defined_constants()
+        if (null === $from && '' === $prefix) {
+            throw new InvalidArgumentException('A prefix must be setted if searching is in global space.');
+        }
+
+        // TODO search in namespaced constants (get_defined_constants(true)['user'])
+        $constants = null === $from
+            ? get_defined_constants()
+            : (new \ReflectionClass($from))->getConstants()
         ;
 
         if ('' !== $prefix) {

@@ -11,12 +11,19 @@
 
 namespace Symfony\Component\Flag;
 
+use Symfony\Component\Flag\Exception\InvalidArgumentException;
+
 class Flag extends AbstractFlag
 {
     public function set($bitfield)
     {
-        // TODO throw InvalidArgumentException if !is_int
-        // TODO throw InvalidArgumentException if FLAG_MAX_VALUE < bitfield
+        if (PHP_INT_MAX < $bitfield) {
+            throw new InvalidArgumentException('Bitfield must not exceed integer max limit.');
+        }
+
+        if (!is_int($bitfield)) {
+            throw new InvalidArgumentException('Bitfield must be an integer.');
+        }
 
         $this->bitfield = $bitfield;
 
@@ -31,14 +38,14 @@ class Flag extends AbstractFlag
             $this->flags[$flag] = $flag;
         }
 
-        $this->bitfield |= $flag;
+        $this->set($this->bitfield | $flag);
 
         return $this;
     }
 
     public function remove($flag)
     {
-        $this->bitfield &= ~$flag;
+        $this->set($this->bitfield & ~$flag);
 
         return $this;
     }
