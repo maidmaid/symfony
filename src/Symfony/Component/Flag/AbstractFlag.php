@@ -13,6 +13,11 @@ namespace Symfony\Component\Flag;
 
 use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
+/**
+ * Base class implementing the FlagInterface.
+ *
+ * @author Dany Maillard <danymaillard93b@gmail.com>
+ */
 abstract class AbstractFlag implements FlagInterface
 {
     protected $from;

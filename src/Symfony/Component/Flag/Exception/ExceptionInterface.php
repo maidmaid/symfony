@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Flag\Exception;
 
+/**
+ * Base ExceptionInterface for the Flag component.
+ *
+ * @author Dany Maillard <danymaillard93b@gmail.com>
+ */
 interface ExceptionInterface
 {
 }

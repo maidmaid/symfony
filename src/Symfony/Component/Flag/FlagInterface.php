@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Flag;
 
+/**
+ * FlagInterface represents a flag.
+ *
+ * @author Dany Maillard <danymaillard93b@gmail.com>
+ */
 interface FlagInterface
 {
     /**

@@ -13,6 +13,13 @@ namespace Symfony\Component\Flag;
 
 use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
+/**
+ * Base concrete class that handles bitfields.
+ *
+ * @see https://en.wikipedia.org/wiki/Bit_field
+ *
+ * @author Dany Maillard <danymaillard93b@gmail.com>
+ */
 class Flag extends AbstractFlag
 {
     /**

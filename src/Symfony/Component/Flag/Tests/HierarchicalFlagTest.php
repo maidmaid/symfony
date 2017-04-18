@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Component\Flag\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Flag\BinarizedFlag;
-use Symfony\Component\Flag\Flag;
 use Symfony\Component\Flag\HierarchicalFlag;
-use Symfony\Component\Flag\Tests\Fixtures\Bar;
 use Symfony\Component\Flag\Tests\Fixtures\Foo;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @author Dany Maillard <danymaillard93b@gmail.com>
+ */
 class HierarchicalFlagTest extends TestCase
 {
     public function testHas()
