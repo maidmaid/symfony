@@ -77,6 +77,9 @@ abstract class AbstractFlag implements FlagInterface
         return new $class($from, $prefix, $bitfield);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     function __toString()
     {
         $flags = array_keys($this->getFlags(true));

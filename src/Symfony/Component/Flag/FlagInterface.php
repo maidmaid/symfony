@@ -21,6 +21,12 @@ interface FlagInterface
      * @param int    $bitfield Bitfield value.
      */
     public function __construct($from = false, $prefix = '', $bitfield = 0);
+
+    /**
+     * Returns a string representation of flag.
+     *
+     * @return string
+     */
     public function __toString();
 
     /**
