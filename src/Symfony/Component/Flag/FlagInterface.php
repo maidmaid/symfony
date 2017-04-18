@@ -13,12 +13,27 @@ namespace Symfony\Component\Flag;
 
 interface FlagInterface
 {
-    public function __construct($from, $prefix, $bitfield);
+    /**
+     * Constructor.
+     *
+     * @param bool   $from     Class from the search flags is made.
+     * @param string $prefix   Prefix flags.
+     * @param int    $bitfield Bitfield value.
+     */
+    public function __construct($from = false, $prefix = '', $bitfield = 0);
     public function __toString();
+
+    /**
+     * Sets bitfield value.
+     *
+     * @param int $bitfield Bitfield value
+     *
+     * @return $this
+     */
     public function set($bitfield);
     public function get();
     public function add($flag);
     public function remove($flag);
     public function has($flag);
-    public function getFlags($flagged);
+    public function getFlags($flagged = false);
 }

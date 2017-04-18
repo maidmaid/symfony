@@ -15,6 +15,16 @@ use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
 class Flag extends AbstractFlag
 {
+    /**
+     * Sets bitfield value.
+     *
+     * @param int $bitfield Bitfield value
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException When bitfield exceeds integer max limit.
+     * @throws InvalidArgumentException When bitfield is not an integer.
+     */
     public function set($bitfield)
     {
         if (PHP_INT_MAX < $bitfield) {
