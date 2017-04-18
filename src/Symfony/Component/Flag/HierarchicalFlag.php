@@ -13,6 +13,9 @@ namespace Symfony\Component\Flag;
 
 class HierarchicalFlag extends Flag
 {
+    /**
+     * {@inheritdoc}
+     */
     public function has($flags)
     {
         return $flags <= $this->bitfield;

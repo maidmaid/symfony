@@ -103,6 +103,19 @@ class FlagTest extends TestCase
         $this->assertNotEquals(Foo::FLAG_C, $flag->get());
     }
 
+    public function testAddStandalone()
+    {
+        $flag = new Flag();
+
+        $flag->add(1);
+        $this->assertEquals(1, $flag->get());
+
+        $flag->add(2);
+        $this->assertEquals(1 | 2, $flag->get());
+
+        $this->assertNotEquals(4, $flag->get());
+    }
+
     public function testRemove()
     {
         $flag = new Flag(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B);
