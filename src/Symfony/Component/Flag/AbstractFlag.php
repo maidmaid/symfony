@@ -143,7 +143,8 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * Searchs flags from class or global space.
      *
-     * @param null|string $from   Class from the search flags is made. Define to null to search flags in global space.
+     * @param null|string $from   Class from where the flags searching flags is made. Define to null to search flags
+     *                            in global space.
      * @param string      $prefix Prefix flags that filter search result.
      *
      * @return array Array of flags.
