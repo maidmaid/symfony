@@ -52,8 +52,6 @@ class Flag extends AbstractFlag
      */
     public function add($flag)
     {
-        // TODO throw InvalidArgumentException if max flags >= flag and has from
-
         if (false === $this->from && !isset($this->flags[$flag])) {
             $this->flags[$flag] = $flag;
         }
