@@ -63,7 +63,6 @@ class FlagTest extends TestCase
         (new Flag())->set(PHP_INT_MAX * 2);
     }
 
-
     public function testGetFlags()
     {
         $flag = new Flag(Foo::class, 'FLAG_', Bar::FLAG_A);

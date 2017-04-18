@@ -23,9 +23,9 @@ class Bar extends Foo
     public static function getNotPrefixedFlags()
     {
         return array(
-            array('A', Bar::A),
-            array('B', Bar::B),
-            array('C', Bar::C),
+            array('A', self::A),
+            array('B', self::B),
+            array('C', self::C),
         );
     }
 

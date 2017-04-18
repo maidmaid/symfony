@@ -44,8 +44,9 @@ class BinarizedFlag extends Flag
      * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
      * </code>
      *
-     * @param $flag
-     * @return mixed
+     * @param int $flag
+     *
+     * @return array
      */
     private function binarize($flag)
     {

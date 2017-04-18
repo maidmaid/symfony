@@ -49,7 +49,7 @@ abstract class AbstractFlag implements FlagInterface
      * @throws InvalidArgumentException When standalone use is defined as hierarchical.
      * @throws InvalidArgumentException When no-integer flags is defined as hierarchical.
      */
-    static public function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
+    public static function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
     {
         $onlyInt = true;
         $forceToBinarize = false;
@@ -88,7 +88,7 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * {@inheritdoc}
      */
-    function __toString()
+    public function __toString()
     {
         $flags = array_keys($this->getFlags(true));
         $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
@@ -97,7 +97,7 @@ abstract class AbstractFlag implements FlagInterface
             '[bin: %b] [dec: %s] [%s: %s]',
             $this->bitfield,
             $this->bitfield,
-            $this->prefix ? $this->prefix.'*': 'flags',
+            $this->prefix ? $this->prefix.'*' : 'flags',
             implode(' | ', $this->prefix ? array_map($subPrefix, $flags) : $flags)
         );
     }
@@ -134,7 +134,7 @@ abstract class AbstractFlag implements FlagInterface
         }
 
         if ($flagged) {
-            return array_filter($this->getFlags(), function ($flag)  { return $this->has($flag); });
+            return array_filter($this->getFlags(), function ($flag) { return $this->has($flag); });
         }
 
         return $this->flags;
@@ -148,7 +148,7 @@ abstract class AbstractFlag implements FlagInterface
      *
      * @return array Array of flags.
      */
-    static public function search($from, $prefix = '')
+    public static function search($from, $prefix = '')
     {
         if (null === $from && '' === $prefix) {
             throw new InvalidArgumentException('A prefix must be setted if searching is in global space.');
