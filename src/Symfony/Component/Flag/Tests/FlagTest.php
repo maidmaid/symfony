@@ -111,4 +111,13 @@ class FlagTest extends TestCase
         $flag->remove(Foo::FLAG_B);
         $this->assertEquals(Foo::FLAG_A, $flag->get());
     }
+
+    public function testHas()
+    {
+        $flag = new Flag(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B);
+
+        $this->assertTrue($flag->has(Foo::FLAG_A));
+        $this->assertTrue($flag->has(Foo::FLAG_B));
+        $this->assertFalse($flag->has(Foo::FLAG_C));
+    }
 }

@@ -66,6 +66,9 @@ class Flag extends AbstractFlag
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function has($flags)
     {
         return ($this->bitfield & $flags) === $flags;

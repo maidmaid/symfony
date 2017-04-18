@@ -62,6 +62,14 @@ interface FlagInterface
      * @return $this
      */
     public function remove($flag);
+
+    /**
+     * Checks if flag exists.
+     *
+     * @param int $flag Bitfield to check.
+     *
+     * @return bool
+     */
     public function has($flag);
 
     /**

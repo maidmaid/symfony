@@ -26,7 +26,7 @@ class BinarizedFlagTest extends TestCase
 
     public function testRemove()
     {
-        $flag = (new BinarizedFlag(Bar::class, ''))
+        $flag = (new BinarizedFlag(Bar::class))
             ->add(Bar::A)
             ->add(Bar::B)
         ;
@@ -35,5 +35,17 @@ class BinarizedFlagTest extends TestCase
         $this->assertEquals(1 /* Bar::A */, $flag->get());
 
         $this->assertNotEquals(4 /* Bar::C */, $flag->get());
+    }
+
+    public function testHas()
+    {
+        $flag = (new BinarizedFlag(Bar::class))
+            ->add(Bar::A)
+            ->add(Bar::B)
+        ;
+
+        $this->assertTrue($flag->has(Bar::A));
+        $this->assertTrue($flag->has(Bar::B));
+        $this->assertFalse($flag->has(Bar::C));
     }
 }
