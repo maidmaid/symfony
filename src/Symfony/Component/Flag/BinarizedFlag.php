@@ -44,9 +44,9 @@ class BinarizedFlag extends Flag
      * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
      * </code>
      *
-     * @param int $flag
+     * @param string $flag No-integer value flag like 'HEAD'.
      *
-     * @return array
+     * @return int
      */
     private function binarize($flag)
     {
@@ -74,7 +74,7 @@ class BinarizedFlag extends Flag
             $this->flags[$flag] = $flag;
         }
 
-        $this->bitfield |= $this->binarize($flag);
+        parent::set($this->binarize($flag));
 
         return $this;
     }

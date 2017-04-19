@@ -12,7 +12,7 @@
 namespace Symfony\Component\Flag\Exception;
 
 /**
- * Base InvalidArgumentException for the Form component.
+ * Base InvalidArgumentException for the Flag component.
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  */

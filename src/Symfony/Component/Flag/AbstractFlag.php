@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Flag;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
 /**
@@ -25,11 +27,15 @@ abstract class AbstractFlag implements FlagInterface
     protected $bitfield;
     protected $flags = null;
 
+    use LoggerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
     public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
+        $this->setLogger(new NullLogger());
+
         $this->from = $from;
         $this->prefix = $prefix;
         $this->set($bitfield);
@@ -93,13 +99,25 @@ abstract class AbstractFlag implements FlagInterface
         $flags = array_keys($this->getFlags(true));
         $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
 
-        return sprintf(
-            '[bin: %b] [dec: %s] [%s: %s]',
+        // $id can be Prefix*, ShortClass, ShortClass::Prefix* or empty (standalone use)
+        $id = '';
+        if (null === $this->from) {
+            $id = $this->prefix.'*';
+        } else if (class_exists($this->from)) {
+            $id = (new \ReflectionClass($this->from))->getShortName();
+            if ('' !== $this->prefix) {
+                $id .= '::'.$this->prefix.'*';
+            }
+        }
+
+        return trim(sprintf(
+            '%s [bin: %b] [dec: %s] [%s: %s]',
+            $id,
             $this->bitfield,
             $this->bitfield,
             $this->prefix ? $this->prefix.'*' : 'flags',
             implode(' | ', $this->prefix ? array_map($subPrefix, $flags) : $flags)
-        );
+        ));
     }
 
     /**
@@ -115,7 +133,10 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function set($bitfield)
     {
-        $this->bitfield = $bitfield;
+        if ($this->bitfield !== $bitfield) {
+            $this->bitfield = $bitfield;
+            $this->logger->debug('bitfield changed {flag}', array('flag' => (string) $this));
+        }
 
         return $this;
     }

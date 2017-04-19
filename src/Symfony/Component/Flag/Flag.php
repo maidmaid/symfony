@@ -42,7 +42,7 @@ class Flag extends AbstractFlag
             throw new InvalidArgumentException('Bitfield must be an integer.');
         }
 
-        $this->bitfield = $bitfield;
+        parent::set($bitfield);
 
         return $this;
     }
