@@ -91,12 +91,14 @@ class FlagTest extends TestCase
     public function provideToString()
     {
         return array(
-            array(Foo::class, '', 0, '[bin: 0] [dec: 0] [flags: ]'),
-            array(Foo::class, '', Foo::FLAG_A, '[bin: 1] [dec: 1] [flags: FLAG_A]'),
-            array(Foo::class, '', Foo::FLAG_A | Foo::FLAG_B, '[bin: 11] [dec: 3] [flags: FLAG_A | FLAG_B]'),
-            array(Foo::class, 'FLAG_', 0, '[bin: 0] [dec: 0] [FLAG_*: ]'),
-            array(Foo::class, 'FLAG_', Foo::FLAG_A, '[bin: 1] [dec: 1] [FLAG_*: A]'),
-            array(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B, '[bin: 11] [dec: 3] [FLAG_*: A | B]'),
+            // array(false, '', 1, '[bin: 1] [dec: 1] [flags: 1]'), TODO
+            array(null, 'E_', E_ERROR, 'E_* [bin: 1] [dec: 1] [E_*: ERROR]'),
+            array(Foo::class, '', 0, 'Foo [bin: 0] [dec: 0] [flags: ]'),
+            array(Foo::class, '', Foo::FLAG_A, 'Foo [bin: 1] [dec: 1] [flags: FLAG_A]'),
+            array(Foo::class, '', Foo::FLAG_A | Foo::FLAG_B, 'Foo [bin: 11] [dec: 3] [flags: FLAG_A | FLAG_B]'),
+            array(Foo::class, 'FLAG_', 0, 'Foo::FLAG_* [bin: 0] [dec: 0] [FLAG_*: ]'),
+            array(Foo::class, 'FLAG_', Foo::FLAG_A, 'Foo::FLAG_* [bin: 1] [dec: 1] [FLAG_*: A]'),
+            array(Foo::class, 'FLAG_', Foo::FLAG_A | Foo::FLAG_B, 'Foo::FLAG_* [bin: 11] [dec: 3] [FLAG_*: A | B]'),
         );
     }
 

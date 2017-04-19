@@ -74,7 +74,7 @@ class BinarizedFlag extends Flag
             $this->flags[$flag] = $flag;
         }
 
-        parent::set($this->binarize($flag));
+        $this->set($this->bitfield | $this->binarize($flag));
 
         return $this;
     }

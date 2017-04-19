@@ -131,7 +131,8 @@ class AbstractFlagTest extends TestCase
     public function testSetAndGet()
     {
         $flag = $this->getMockBuilder(AbstractFlag::class)
-            ->setMethodsExcept(array('set', 'get'))
+            ->enableOriginalConstructor()
+            ->setMethodsExcept(array('set', 'get', 'setLogger'))
             ->getMock()
         ;
 
