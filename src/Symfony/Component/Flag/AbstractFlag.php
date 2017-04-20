@@ -25,7 +25,7 @@ abstract class AbstractFlag implements FlagInterface
     protected $from;
     protected $prefix;
     protected $bitfield;
-    protected $flags = null;
+    protected $flags = array();
 
     use LoggerAwareTrait;
 
@@ -66,7 +66,7 @@ abstract class AbstractFlag implements FlagInterface
             }
             $forceToBinarize = true;
         } else {
-            foreach (self::search($from, $prefix) as $value) {
+            foreach (self::search($from, $prefix) as $value => $flag) {
                 if (!is_int($value)) {
                     $onlyInt = false;
                     break;
@@ -96,7 +96,7 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function __toString()
     {
-        $flags = array_keys($this->getFlags(true));
+        $flags = $this->getFlags(true);
         $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
 
         // $id can be Prefix*, ShortClass, ShortClass::Prefix* or empty (standalone use)
@@ -146,16 +146,12 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function getFlags($flagged = false)
     {
-        if (null === $this->flags) {
-            $this->flags = array();
-        }
-
-        if (false !== $this->from) {
+        if (empty($this->flags) && false !== $this->from) {
             $this->flags = self::search($this->from, $this->prefix);
         }
 
         if ($flagged) {
-            return array_filter($this->getFlags(), function ($flag) { return $this->has($flag); });
+            return array_filter($this->flags, function ($v) { return $this->has($v); }, ARRAY_FILTER_USE_KEY);
         }
 
         return $this->flags;
@@ -190,6 +186,6 @@ abstract class AbstractFlag implements FlagInterface
             }
         }
 
-        return $constants;
+        return array_flip($constants);
     }
 }

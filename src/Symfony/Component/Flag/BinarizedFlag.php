@@ -48,10 +48,10 @@ class BinarizedFlag extends Flag
      *
      * @return int
      */
-    private function binarize($flag)
+    public function binarize($flag)
     {
         if (null === $this->indexed) {
-            $this->indexed = array_flip(array_values($this->getFlags()));
+            $this->indexed = array_flip(array_keys($this->getFlags()));
         }
 
         if (!isset($this->indexed[$flag])) {

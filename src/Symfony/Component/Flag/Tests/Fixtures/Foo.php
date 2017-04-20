@@ -23,9 +23,9 @@ class Foo
     public static function getPrefixedFlags()
     {
         return array(
-            array('FLAG_A', Bar::FLAG_A),
-            array('FLAG_B', Bar::FLAG_B),
-            array('FLAG_C', Bar::FLAG_C),
+            array(Bar::FLAG_A, 'FLAG_A'),
+            array(Bar::FLAG_B, 'FLAG_B'),
+            array(Bar::FLAG_C, 'FLAG_C'),
         );
     }
 }

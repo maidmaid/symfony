@@ -28,19 +28,19 @@ class AbstractFlagTest extends TestCase
         $flags = AbstractFlag::search(null, 'E_');
 
         $expects = array(
-            array('E_ERROR', E_ERROR),
-            array('E_WARNING', E_WARNING),
-            array('E_NOTICE', E_NOTICE),
-            array('E_CORE_ERROR', E_CORE_ERROR),
-            array('E_CORE_WARNING', E_CORE_WARNING),
-            array('E_COMPILE_ERROR', E_COMPILE_WARNING),
-            array('E_USER_ERROR', E_USER_ERROR),
-            array('E_USER_WARNING', E_USER_WARNING),
-            array('E_USER_NOTICE', E_STRICT),
-            array('E_RECOVERABLE_ERROR', E_RECOVERABLE_ERROR),
-            array('E_DEPRECATED', E_DEPRECATED),
-            array('E_USER_DEPRECATED', E_USER_DEPRECATED),
-            array('E_ALL', E_ALL),
+            array(E_ERROR, 'E_ERROR'),
+            array(E_WARNING, 'E_WARNING'),
+            array(E_NOTICE, 'E_NOTICE'),
+            array(E_CORE_ERROR, 'E_CORE_ERROR'),
+            array(E_CORE_WARNING, 'E_CORE_WARNING'),
+            array(E_COMPILE_WARNING, 'E_COMPILE_ERROR'),
+            array(E_USER_ERROR, 'E_USER_ERROR'),
+            array(E_USER_WARNING, 'E_USER_WARNING'),
+            array(E_STRICT, 'E_USER_NOTICE'),
+            array(E_RECOVERABLE_ERROR, 'E_RECOVERABLE_ERROR'),
+            array(E_DEPRECATED, 'E_DEPRECATED'),
+            array(E_USER_DEPRECATED, 'E_USER_DEPRECATED'),
+            array(E_ALL, 'E_ALL'),
         );
 
         foreach ($expects as $expect) {
@@ -48,8 +48,8 @@ class AbstractFlagTest extends TestCase
             $this->assertContains($expect[1], $flags);
         }
 
-        $this->assertArrayNotHasKey('PHP_VERSION', $flags);
-        $this->assertNotContains(PHP_VERSION, $flags);
+        $this->assertArrayNotHasKey(PHP_VERSION, $flags);
+        $this->assertNotContains('PHP_VERSION', $flags);
     }
 
     public function testSearchInClass()

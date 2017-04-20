@@ -73,9 +73,9 @@ class FlagTest extends TestCase
         }
 
         $flags = $flag->getFlags(true);
-        $this->assertArrayHasKey('FLAG_A', $flags);
-        $this->assertArrayNotHasKey('FLAG_B', $flags);
-        $this->assertArrayNotHasKey('FLAG_C', $flags);
+        $this->assertArrayHasKey(Foo::FLAG_A, $flags);
+        $this->assertArrayNotHasKey(Foo::FLAG_B, $flags);
+        $this->assertArrayNotHasKey(Foo::FLAG_C, $flags);
     }
 
     /**
