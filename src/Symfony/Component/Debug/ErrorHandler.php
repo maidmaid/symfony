@@ -22,6 +22,7 @@ use Symfony\Component\Debug\FatalErrorHandler\UndefinedFunctionFatalErrorHandler
 use Symfony\Component\Debug\FatalErrorHandler\UndefinedMethodFatalErrorHandler;
 use Symfony\Component\Debug\FatalErrorHandler\ClassNotFoundFatalErrorHandler;
 use Symfony\Component\Debug\FatalErrorHandler\FatalErrorHandlerInterface;
+use Symfony\Component\Flag\Flag;
 
 /**
  * A generic ErrorHandler for the PHP engine.

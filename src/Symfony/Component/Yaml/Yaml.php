@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Yaml;
 
+use Symfony\Component\Flag\Flag;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
@@ -51,13 +52,15 @@ class Yaml
      */
     public static function parse($input, $flags = 0)
     {
+        $flag = Flag::create(self::class, '', false, $flags);
+
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the PARSE_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
             if ($flags) {
-                $flags = self::PARSE_EXCEPTION_ON_INVALID_TYPE;
+                $flag->add(self::PARSE_EXCEPTION_ON_INVALID_TYPE);
             } else {
-                $flags = 0;
+                $flag->set(0);
             }
         }
 
@@ -65,7 +68,7 @@ class Yaml
             @trigger_error('Passing a boolean flag to toggle object support is deprecated since version 3.1 and will be removed in 4.0. Use the PARSE_OBJECT flag instead.', E_USER_DEPRECATED);
 
             if (func_get_arg(2)) {
-                $flags |= self::PARSE_OBJECT;
+                $flag->add(self::PARSE_OBJECT);
             }
         }
 
@@ -73,13 +76,13 @@ class Yaml
             @trigger_error('Passing a boolean flag to toggle object for map support is deprecated since version 3.1 and will be removed in 4.0. Use the Yaml::PARSE_OBJECT_FOR_MAP flag instead.', E_USER_DEPRECATED);
 
             if (func_get_arg(3)) {
-                $flags |= self::PARSE_OBJECT_FOR_MAP;
+                $flag->add(self::PARSE_OBJECT_FOR_MAP);
             }
         }
 
         $yaml = new Parser();
 
-        return $yaml->parse($input, $flags);
+        return $yaml->parse($input, $flag->get());
     }
 
     /**
