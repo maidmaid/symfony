@@ -70,4 +70,23 @@ class BinarizedFlagTest extends TestCase
         $this->assertTrue($flag->has(Bar::B));
         $this->assertFalse($flag->has(Bar::C));
     }
+
+    public function testGetFlags()
+    {
+        $flag = (new BinarizedFlag(Bar::class))
+            ->add(Bar::A)
+            ->add(Bar::B)
+        ;
+
+        $flags = $flag->getFlags();
+        foreach (Bar::getBinarizedFlags() as $expected) {
+            $this->assertArrayHasKey($expected[0], $flags);
+            $this->assertContains($expected[1], $flags);
+        }
+
+        $flags = $flag->getFlags(true);
+        $this->assertArrayHasKey(1 /* Bar::A */, $flags);
+        $this->assertArrayHasKey(2 /* Bar::B */, $flags);
+        $this->assertArrayNotHasKey(4 /* Bar::C */, $flags);
+    }
 }

@@ -14,7 +14,7 @@ namespace Symfony\Component\Flag;
 /**
  * Concrete Flag class that handles no-integer values.
  *
- * Some flags have bitfields no-integer like this.
+ * Some flags have no-integer values like this:
  *
  * <code>
  * const METHOD_HEAD = 'HEAD';
@@ -23,13 +23,13 @@ namespace Symfony\Component\Flag;
  * const METHOD_PUT = 'PUT';
  * </code>
  *
- * Internaly, this flag class binarizes no-integer values.
+ * This Flag class binarizes internaly no-integer values.
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  */
 class BinarizedFlag extends Flag
 {
-    private $indexed = null;
+    private $map = array();
     private $binarized = array();
 
     /**
@@ -44,25 +44,18 @@ class BinarizedFlag extends Flag
      * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
      * </code>
      *
-     * @param string $flag No-integer value flag like 'HEAD'.
+     * @param string $value No-integer value.
      *
-     * @return int
+     * @return int Binarized value.
      */
-    public function binarize($flag)
+    private function binarize($value, $flag = null)
     {
-        if (null === $this->indexed) {
-            $this->indexed = array_flip(array_keys($this->getFlags()));
+        if (!isset($this->map[$value])) {
+            $this->map[$value] = 1 << count($this->map);
+            $this->binarized[$this->map[$value]] = null === $flag ? $value : $flag;
         }
 
-        if (!isset($this->indexed[$flag])) {
-            $this->indexed[$flag] = count($this->indexed);
-        }
-
-        if (!isset($this->binarized[$flag])) {
-            $this->binarized[$flag] = 1 << $this->indexed[$flag];
-        }
-
-        return $this->binarized[$flag];
+        return $this->map[$value];
     }
 
     /**
@@ -93,5 +86,23 @@ class BinarizedFlag extends Flag
     public function has($flags)
     {
         return parent::has($this->binarize($flags));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFlags($flagged = false)
+    {
+        if (false !== $this->from && empty($this->binarized)) {
+            foreach (parent::getFlags() as $value => $flag) {
+                $this->binarize($value, $flag);
+            }
+        }
+
+        if ($flagged) {
+            return array_filter($this->binarized, function ($v) { return parent::has($v); }, ARRAY_FILTER_USE_KEY);
+        }
+
+        return $this->binarized;
     }
 }

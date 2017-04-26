@@ -38,6 +38,7 @@ class Flag extends AbstractFlag
             throw new InvalidArgumentException('Bitfield must not exceed integer max limit.');
         }
 
+        // TODO use filter_var($bitfield, FILTER_VALIDATE_INT) ?
         if (!is_int($bitfield)) {
             throw new InvalidArgumentException('Bitfield must be an integer.');
         }

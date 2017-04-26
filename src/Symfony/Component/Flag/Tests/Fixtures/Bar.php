@@ -33,4 +33,16 @@ class Bar extends Foo
     {
         return array_merge(self::getNotPrefixedFlags(), self::getPrefixedFlags());
     }
+
+    public static function getBinarizedFlags()
+    {
+        return array(
+            array(1, 'A'),
+            array(2, 'B'),
+            array(4, 'C'),
+            array(8, 'FLAG_A'),
+            array(16, 'FLAG_B'),
+            array(32, 'FLAG_C'),
+        );
+    }
 }
