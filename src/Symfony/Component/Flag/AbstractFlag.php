@@ -12,7 +12,6 @@
 namespace Symfony\Component\Flag;
 
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
 use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
 /**
@@ -34,11 +33,13 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
-        $this->setLogger(new NullLogger());
-
         $this->from = $from;
         $this->prefix = $prefix;
         $this->set($bitfield);
+
+        if (false !== $this->from) {
+            $this->flags = self::search($this->from, $this->prefix);
+        }
     }
 
     /**
@@ -133,10 +134,11 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function set($bitfield)
     {
-        if ($this->bitfield !== $bitfield) {
-            $this->bitfield = $bitfield;
+        if ($this->bitfield !== $bitfield && null !== $this->logger) {
             $this->logger->debug('bitfield changed {flag}', array('flag' => (string) $this));
         }
+
+        $this->bitfield = $bitfield;
 
         return $this;
     }
@@ -146,10 +148,6 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function getIterator($flagged = false)
     {
-        if (empty($this->flags) && false !== $this->from) {
-            $this->flags = self::search($this->from, $this->prefix);
-        }
-
         return new \ArrayIterator($flagged
             ? array_filter($this->flags, function ($v) { return $this->has($v); }, ARRAY_FILTER_USE_KEY)
             : $this->flags

@@ -33,29 +33,15 @@ class BinarizedFlag extends Flag
     private $binarized = array();
 
     /**
-     * Converts no-integer value flag in saved binary field.
-     *
-     * <code>
-     * | Flag         | Value  | Index | Binary |
-     * ------------------------------------------
-     * | METHOD_HEAD  | 'HEAD' | 0     | 0b0001 |
-     * | METHOD_GET   | 'GET'  | 1     | 0b0010 |
-     * | METHOD_POST  | 'POST' | 2     | 0b0100 |
-     * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
-     * </code>
-     *
-     * @param string $value No-integer value.
-     *
-     * @return int Binarized value.
+     * {@inheritdoc}
      */
-    private function binarize($value, $flag = null)
+    public function __construct($from = false, $prefix = '', $bitfield = 0)
     {
-        if (!isset($this->map[$value])) {
-            $this->map[$value] = 1 << count($this->map);
-            $this->binarized[$this->map[$value]] = null === $flag ? $value : $flag;
-        }
+        parent::__construct($from, $prefix, $bitfield);
 
-        return $this->map[$value];
+        if (false !== $this->from) {
+            array_walk($this->flags, function ($flag, $value) { $this->binarize($value, $flag); });
+        }
     }
 
     /**
@@ -93,15 +79,35 @@ class BinarizedFlag extends Flag
      */
     public function getIterator($flagged = false)
     {
-        if (false !== $this->from && empty($this->binarized)) {
-            foreach (parent::getIterator() as $value => $flag) {
-                $this->binarize($value, $flag);
-            }
-        }
-
         return new \ArrayIterator($flagged
             ? array_filter($this->binarized, function ($v) { return parent::has($v); }, ARRAY_FILTER_USE_KEY)
             : $this->binarized
         );
+    }
+
+    /**
+     * Converts no-integer value flag in saved binary field.
+     *
+     * <code>
+     * | Flag         | Value  | Index | Binary |
+     * ------------------------------------------
+     * | METHOD_HEAD  | 'HEAD' | 0     | 0b0001 |
+     * | METHOD_GET   | 'GET'  | 1     | 0b0010 |
+     * | METHOD_POST  | 'POST' | 2     | 0b0100 |
+     * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
+     * </code>
+     *
+     * @param string $value No-integer value.
+     *
+     * @return int Binarized value.
+     */
+    private function binarize($value, $flag = null)
+    {
+        if (!isset($this->map[$value])) {
+            $this->map[$value] = 1 << count($this->map);
+            $this->binarized[$this->map[$value]] = null === $flag ? $value : $flag;
+        }
+
+        return $this->map[$value];
     }
 }
