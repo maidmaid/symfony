@@ -14,7 +14,7 @@ namespace Symfony\Component\Flag;
 use Symfony\Component\Flag\Exception\InvalidArgumentException;
 
 /**
- * Base concrete class that handles bitfields.
+ * Concrete Flag class that handles bitfields.
  *
  * @see https://en.wikipedia.org/wiki/Bit_field
  *
@@ -29,8 +29,8 @@ class Flag extends AbstractFlag
      *
      * @return $this
      *
-     * @throws InvalidArgumentException When bitfield exceeds integer max limit.
-     * @throws InvalidArgumentException When bitfield is not an integer.
+     * @throws InvalidArgumentException When bitfield exceeds integer max limit
+     * @throws InvalidArgumentException When bitfield is not an integer
      */
     public function set($bitfield)
     {
@@ -38,7 +38,6 @@ class Flag extends AbstractFlag
             throw new InvalidArgumentException('Bitfield must not exceed integer max limit.');
         }
 
-        // TODO use filter_var($bitfield, FILTER_VALIDATE_INT) ?
         if (!is_int($bitfield)) {
             throw new InvalidArgumentException('Bitfield must be an integer.');
         }

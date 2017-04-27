@@ -23,7 +23,7 @@ namespace Symfony\Component\Flag;
  * const METHOD_PUT = 'PUT';
  * </code>
  *
- * This Flag class binarizes internaly no-integer values.
+ * This Flag class binarizes no-integer values internaly.
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  */
@@ -97,9 +97,9 @@ class BinarizedFlag extends Flag
      * | METHOD_PUT   | 'PUT'  | 3     | 0b1000 |
      * </code>
      *
-     * @param string $value No-integer value.
+     * @param string $value No-integer value
      *
-     * @return int Binarized value.
+     * @return int Binarized value
      */
     private function binarize($value, $flag = null)
     {

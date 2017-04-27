@@ -132,7 +132,7 @@ class AbstractFlagTest extends TestCase
     {
         $flag = $this->getMockBuilder(AbstractFlag::class)
             ->enableOriginalConstructor()
-            ->setMethodsExcept(array('set', 'get', 'setLogger'))
+            ->setMethodsExcept(array('set', 'get'))
             ->getMock()
         ;
 

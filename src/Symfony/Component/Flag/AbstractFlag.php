@@ -45,16 +45,16 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * Creates dynamically instance of Flag.
      *
-     * @param string|null|bool $from         Class from where the flags searching flags is made. Define to null to
-     *                                       search flags in global space. Define to false for standalone use.
-     * @param string           $prefix       Prefix flags from the search flags is made.
-     * @param bool             $hierarchical Defines hierarchical flags.
-     * @param int              $bitfield     Sets bitfield value.
+     * @param string|null|bool $from         Class from where the searching flags is made; define to null to
+     *                                       search flags in global space; define to false for standalone use
+     * @param string           $prefix       Prefix flags from the search flags is made
+     * @param bool             $hierarchical Defines hierarchical flags
+     * @param int              $bitfield     Sets bitfield value
      *
      * @return AbstractFlag
      *
-     * @throws InvalidArgumentException When standalone use is defined as hierarchical.
-     * @throws InvalidArgumentException When no-integer flags is defined as hierarchical.
+     * @throws InvalidArgumentException When standalone use is defined as hierarchical
+     * @throws InvalidArgumentException When no-integer flags is defined as hierarchical
      */
     public static function create($from = false, $prefix = '', $hierarchical = false, $bitfield = 0)
     {
@@ -101,7 +101,7 @@ abstract class AbstractFlag implements FlagInterface
         $id = '';
         if (null === $this->from) {
             $id = $this->prefix.'*';
-        } else if (class_exists($this->from)) {
+        } elseif (class_exists($this->from)) {
             $id = (new \ReflectionClass($this->from))->getShortName();
             if ('' !== $this->prefix) {
                 $id .= '::'.$this->prefix.'*';
@@ -157,9 +157,9 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * Searchs flags from class or global space.
      *
-     * @param null|string $from   Class from where the flags searching flags is made. Define to null to search flags
-     *                            in global space.
-     * @param string      $prefix Prefix flags that filter search result.
+     * @param null|string $from   Class from where the flags searching flags is made; define to null to search flags
+     *                            in global space
+     * @param string      $prefix Prefix flags that filter search result
      *
      * @return array Array of flags.
      */

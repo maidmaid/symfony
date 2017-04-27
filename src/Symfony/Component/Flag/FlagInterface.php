@@ -21,9 +21,9 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param bool   $from     Class from where the flags searching flags is made.
-     * @param string $prefix   Prefix flags.
-     * @param int    $bitfield Bitfield value.
+     * @param bool   $from     Class from where the searching flags is made
+     * @param string $prefix   Prefix flags
+     * @param int    $bitfield Bitfield value
      */
     public function __construct($from = false, $prefix = '', $bitfield = 0);
 
@@ -53,7 +53,7 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Adds a flag.
      *
-     * @param int $flag Bitfield to add.
+     * @param int $flag Bitfield to add
      *
      * @return $this
      */
@@ -62,7 +62,7 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Removes a flag.
      *
-     * @param int $flag Bitfield to remove.
+     * @param int $flag Bitfield to remove
      *
      * @return $this
      */
@@ -71,7 +71,7 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Checks if flag exists.
      *
-     * @param int $flag Bitfield to check.
+     * @param int $flag Bitfield to check
      *
      * @return bool
      */
@@ -80,7 +80,7 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Gets flags iterator.
      *
-     * @param bool $flagged Filter to iterate only on flagged flags.
+     * @param bool $flagged Filter to iterate only on flagged flags
      *
      * @return \ArrayIterator
      */
