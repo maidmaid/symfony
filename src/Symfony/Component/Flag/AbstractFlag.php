@@ -134,11 +134,12 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function set($bitfield)
     {
-        if ($this->bitfield !== $bitfield && null !== $this->logger) {
-            $this->logger->debug('bitfield changed {flag}', array('flag' => (string) $this));
+        if ($this->bitfield !== $bitfield) {
+            $this->bitfield = $bitfield;
+            if (null !== $this->logger) {
+                $this->logger->debug('bitfield changed {flag}', array('flag' => (string) $this));
+            }
         }
-
-        $this->bitfield = $bitfield;
 
         return $this;
     }
