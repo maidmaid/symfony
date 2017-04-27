@@ -91,18 +91,17 @@ class BinarizedFlag extends Flag
     /**
      * {@inheritdoc}
      */
-    public function getFlags($flagged = false)
+    public function getIterator($flagged = false)
     {
         if (false !== $this->from && empty($this->binarized)) {
-            foreach (parent::getFlags() as $value => $flag) {
+            foreach (parent::getIterator() as $value => $flag) {
                 $this->binarize($value, $flag);
             }
         }
 
-        if ($flagged) {
-            return array_filter($this->binarized, function ($v) { return parent::has($v); }, ARRAY_FILTER_USE_KEY);
-        }
-
-        return $this->binarized;
+        return new \ArrayIterator($flagged
+            ? array_filter($this->binarized, function ($v) { return parent::has($v); }, ARRAY_FILTER_USE_KEY)
+            : $this->binarized
+        );
     }
 }

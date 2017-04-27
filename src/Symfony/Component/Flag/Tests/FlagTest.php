@@ -63,16 +63,16 @@ class FlagTest extends TestCase
         (new Flag())->set(PHP_INT_MAX * 2);
     }
 
-    public function testGetFlags()
+    public function testGetIterator()
     {
         $flag = new Flag(Foo::class, 'FLAG_', Bar::FLAG_A);
 
-        $flags = $flag->getFlags();
+        $flags = $flag->getIterator();
         foreach (Foo::getPrefixedFlags() as $expected) {
             $this->assertArrayHasKey($expected[0], $flags);
         }
 
-        $flags = $flag->getFlags(true);
+        $flags = $flag->getIterator(true);
         $this->assertArrayHasKey(Foo::FLAG_A, $flags);
         $this->assertArrayNotHasKey(Foo::FLAG_B, $flags);
         $this->assertArrayNotHasKey(Foo::FLAG_C, $flags);

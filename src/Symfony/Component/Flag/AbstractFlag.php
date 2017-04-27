@@ -96,10 +96,7 @@ abstract class AbstractFlag implements FlagInterface
      */
     public function __toString()
     {
-        $flags = $this->getFlags(true);
-        $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
-
-        // $id can be Prefix*, ShortClass, ShortClass::Prefix* or empty (standalone use)
+        // ID can be "Prefix*", "ShortClass", "ShortClass::Prefix*" or empty in standalone case
         $id = '';
         if (null === $this->from) {
             $id = $this->prefix.'*';
@@ -109,6 +106,9 @@ abstract class AbstractFlag implements FlagInterface
                 $id .= '::'.$this->prefix.'*';
             }
         }
+
+        $flags = iterator_to_array($this->getIterator(true));
+        $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
 
         return trim(sprintf(
             '%s [bin: %b] [dec: %s] [%s: %s]',
@@ -144,17 +144,16 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * {@inheritdoc}
      */
-    public function getFlags($flagged = false)
+    public function getIterator($flagged = false)
     {
         if (empty($this->flags) && false !== $this->from) {
             $this->flags = self::search($this->from, $this->prefix);
         }
 
-        if ($flagged) {
-            return array_filter($this->flags, function ($v) { return $this->has($v); }, ARRAY_FILTER_USE_KEY);
-        }
-
-        return $this->flags;
+        return new \ArrayIterator($flagged
+            ? array_filter($this->flags, function ($v) { return $this->has($v); }, ARRAY_FILTER_USE_KEY)
+            : $this->flags
+        );
     }
 
     /**

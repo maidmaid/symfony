@@ -16,7 +16,7 @@ namespace Symfony\Component\Flag;
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  */
-interface FlagInterface
+interface FlagInterface extends \IteratorAggregate
 {
     /**
      * Constructor.
@@ -78,11 +78,11 @@ interface FlagInterface
     public function has($flag);
 
     /**
-     * Get flags.
+     * Gets flags iterator.
      *
-     * @param bool $flagged Filter for get only flagged flags.
+     * @param bool $flagged Filter to iterate only on flagged flags.
      *
-     * @return mixed
+     * @return \ArrayIterator
      */
-    public function getFlags($flagged = false);
+    public function getIterator($flagged = false);
 }
