@@ -91,7 +91,6 @@ class FlagTest extends TestCase
     public function provideToString()
     {
         return array(
-            // array(false, '', 1, '[bin: 1] [dec: 1] [flags: 1]'), TODO
             array(null, 'E_', E_ERROR, 'E_* [bin: 1] [dec: 1] [E_*: ERROR]'),
             array(Foo::class, '', 0, 'Foo [bin: 0] [dec: 0] [flags: ]'),
             array(Foo::class, '', Foo::FLAG_A, 'Foo [bin: 1] [dec: 1] [flags: FLAG_A]'),
