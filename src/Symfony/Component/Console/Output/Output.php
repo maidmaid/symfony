@@ -13,6 +13,7 @@ namespace Symfony\Component\Console\Output;
 
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Flag\Flag;
 
 /**
  * Base class for output classes.
@@ -41,7 +42,7 @@ abstract class Output implements OutputInterface
      */
     public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = false, OutputFormatterInterface $formatter = null)
     {
-        $this->verbosity = null === $verbosity ? self::VERBOSITY_NORMAL : $verbosity;
+        $this->verbosity = Flag::create(self::class, 'VERBOSITY_', true, null === $verbosity ? self::VERBOSITY_NORMAL : $verbosity);
         $this->formatter = $formatter ?: new OutputFormatter();
         $this->formatter->setDecorated($decorated);
     }
@@ -83,7 +84,7 @@ abstract class Output implements OutputInterface
      */
     public function setVerbosity($level)
     {
-        $this->verbosity = (int) $level;
+        $this->verbosity->set($level);
     }
 
     /**
@@ -91,7 +92,7 @@ abstract class Output implements OutputInterface
      */
     public function getVerbosity()
     {
-        return $this->verbosity;
+        return $this->verbosity->get();
     }
 
     /**
@@ -99,7 +100,7 @@ abstract class Output implements OutputInterface
      */
     public function isQuiet()
     {
-        return self::VERBOSITY_QUIET === $this->verbosity;
+        return $this->verbosity->has(self::VERBOSITY_QUIET);
     }
 
     /**
@@ -107,7 +108,7 @@ abstract class Output implements OutputInterface
      */
     public function isVerbose()
     {
-        return self::VERBOSITY_VERBOSE <= $this->verbosity;
+        return $this->verbosity->has(self::VERBOSITY_VERBOSE);
     }
 
     /**
@@ -115,7 +116,7 @@ abstract class Output implements OutputInterface
      */
     public function isVeryVerbose()
     {
-        return self::VERBOSITY_VERY_VERBOSE <= $this->verbosity;
+        return $this->verbosity->has(self::VERBOSITY_VERY_VERBOSE);
     }
 
     /**
@@ -123,7 +124,7 @@ abstract class Output implements OutputInterface
      */
     public function isDebug()
     {
-        return self::VERBOSITY_DEBUG <= $this->verbosity;
+        return $this->verbosity->has(self::VERBOSITY_DEBUG);
     }
 
     /**

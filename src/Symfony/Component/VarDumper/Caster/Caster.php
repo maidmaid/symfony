@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
+use Symfony\Component\Flag\Flag;
 use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
@@ -103,36 +104,37 @@ class Caster
     public static function filter(array $a, $filter, array $listedProperties = array(), &$count = 0)
     {
         $count = 0;
+        $type = Flag::create(self::class, 'EXCLUDE_');
 
         foreach ($a as $k => $v) {
-            $type = self::EXCLUDE_STRICT & $filter;
+            $type->set(self::EXCLUDE_STRICT & $filter);
 
             if (null === $v) {
-                $type |= self::EXCLUDE_NULL & $filter;
+                $type->add(self::EXCLUDE_NULL & $filter);
             }
             if (empty($v)) {
-                $type |= self::EXCLUDE_EMPTY & $filter;
+                $type->add(self::EXCLUDE_EMPTY & $filter);
             }
             if ((self::EXCLUDE_NOT_IMPORTANT & $filter) && !in_array($k, $listedProperties, true)) {
-                $type |= self::EXCLUDE_NOT_IMPORTANT;
+                $type->add(self::EXCLUDE_NOT_IMPORTANT);
             }
             if ((self::EXCLUDE_VERBOSE & $filter) && in_array($k, $listedProperties, true)) {
-                $type |= self::EXCLUDE_VERBOSE;
+                $type->add(self::EXCLUDE_VERBOSE);
             }
 
             if (!isset($k[1]) || "\0" !== $k[0]) {
-                $type |= self::EXCLUDE_PUBLIC & $filter;
+                $type->add(self::EXCLUDE_PUBLIC & $filter);
             } elseif ('~' === $k[1]) {
-                $type |= self::EXCLUDE_VIRTUAL & $filter;
+                $type->add(self::EXCLUDE_VIRTUAL & $filter);
             } elseif ('+' === $k[1]) {
-                $type |= self::EXCLUDE_DYNAMIC & $filter;
+                $type->add(self::EXCLUDE_DYNAMIC & $filter);
             } elseif ('*' === $k[1]) {
-                $type |= self::EXCLUDE_PROTECTED & $filter;
+                $type->add(self::EXCLUDE_PROTECTED & $filter);
             } else {
-                $type |= self::EXCLUDE_PRIVATE & $filter;
+                $type->add(self::EXCLUDE_PRIVATE & $filter);
             }
 
-            if ((self::EXCLUDE_STRICT & $filter) ? $type === $filter : $type) {
+            if ((self::EXCLUDE_STRICT & $filter) ? $type->get() === $filter : $type->get()) {
                 unset($a[$k]);
                 ++$count;
             }
