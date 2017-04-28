@@ -77,7 +77,7 @@ class BinarizedFlag extends Flag
     /**
      * {@inheritdoc}
      */
-    public function getIterator($flagged = false)
+    public function getIterator($flagged = true)
     {
         return new \ArrayIterator($flagged
             ? array_filter($this->binarized, function ($v) { return parent::has($v); }, ARRAY_FILTER_USE_KEY)

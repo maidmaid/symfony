@@ -67,12 +67,12 @@ class FlagTest extends TestCase
     {
         $flag = new Flag(Foo::class, 'FLAG_', Bar::FLAG_A);
 
-        $flags = $flag->getIterator();
+        $flags = $flag->getIterator(false);
         foreach (Foo::getPrefixedFlags() as $expected) {
             $this->assertArrayHasKey($expected[0], $flags);
         }
 
-        $flags = $flag->getIterator(true);
+        $flags = $flag->getIterator();
         $this->assertArrayHasKey(Foo::FLAG_A, $flags);
         $this->assertArrayNotHasKey(Foo::FLAG_B, $flags);
         $this->assertArrayNotHasKey(Foo::FLAG_C, $flags);

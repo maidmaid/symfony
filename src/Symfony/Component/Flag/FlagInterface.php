@@ -80,9 +80,9 @@ interface FlagInterface extends \IteratorAggregate
     /**
      * Gets flags iterator.
      *
-     * @param bool $flagged Filter to iterate only on flagged flags
+     * @param bool $flagged Filter to iterate only on flagged flags; define to false to iterate on all flags
      *
      * @return \ArrayIterator
      */
-    public function getIterator($flagged = false);
+    public function getIterator($flagged = true);
 }

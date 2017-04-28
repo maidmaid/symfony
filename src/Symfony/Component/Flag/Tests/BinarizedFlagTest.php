@@ -78,13 +78,13 @@ class BinarizedFlagTest extends TestCase
             ->add(Bar::B)
         ;
 
-        $flags = $flag->getIterator();
+        $flags = $flag->getIterator(false);
         foreach (Bar::getBinarizedFlags() as $expected) {
             $this->assertArrayHasKey($expected[0], $flags);
             $this->assertContains($expected[1], $flags);
         }
 
-        $flags = $flag->getIterator(true);
+        $flags = $flag->getIterator();
         $this->assertArrayHasKey(1 /* Bar::A */, $flags);
         $this->assertArrayHasKey(2 /* Bar::B */, $flags);
         $this->assertArrayNotHasKey(4 /* Bar::C */, $flags);

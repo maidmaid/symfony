@@ -108,8 +108,11 @@ abstract class AbstractFlag implements FlagInterface
             }
         }
 
-        $flags = iterator_to_array($this->getIterator(true));
-        $subPrefix = function ($flag) { return substr($flag, strlen($this->prefix)); };
+        // removes prefix of each flag (example with E_ prefix, E_ALL decomes ALL)
+        $flags = $this->prefix
+            ? array_map(function ($flag) { return substr($flag, strlen($this->prefix)); }, iterator_to_array($this))
+            : iterator_to_array($this);
+        ;
 
         return trim(sprintf(
             '%s [bin: %b] [dec: %s] [%s: %s]',
@@ -117,7 +120,7 @@ abstract class AbstractFlag implements FlagInterface
             $this->bitfield,
             $this->bitfield,
             $this->prefix ? $this->prefix.'*' : 'flags',
-            implode(' | ', $this->prefix ? array_map($subPrefix, $flags) : $flags)
+            implode(' | ', $flags)
         ));
     }
 
@@ -147,7 +150,7 @@ abstract class AbstractFlag implements FlagInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator($flagged = false)
+    public function getIterator($flagged = true)
     {
         return new \ArrayIterator($flagged
             ? array_filter($this->flags, function ($v) { return $this->has($v); }, ARRAY_FILTER_USE_KEY)
