@@ -27,7 +27,7 @@ class DateCaster
         $fromNow = (new \DateTime())->diff($d);
 
         $title = $d->format('l, F j, Y')
-            ."\n".$fromNow->format('%R').(ltrim($fromNow->format('%yy %mm %dd %H:%I:%Ss'), ' 0ymd:s') ?: '0s').' from now'
+            ."\n".$fromNow->format('%R').self::formatInterval($fromNow).' from now'
             .($location ? ($d->format('I') ? "\nDST On" : "\nDST Off") : '')
         ;
 
@@ -37,5 +37,30 @@ class DateCaster
         $stub->class .= $d->format(' @U');
 
         return $a;
+    }
+
+    public static function castInterval(\DateInterval $i, array $a, Stub $stub, $isNested, $filter)
+    {
+        $prefix = Caster::PREFIX_VIRTUAL;
+
+        $a = array(
+            $prefix.'interval' => self::formatInterval($i),
+        );
+
+        return $a;
+    }
+
+    private static function formatInterval(\DateInterval $i)
+    {
+        $format = '%R '
+            .($i->y ? '%y year(s) ' : '')
+            .($i->m ? '%m month(s) ' : '')
+            .($i->d ? '%d day(s) ' : '')
+            .($i->h || $i->i || $i->s ? '%H:%I:%S' : '')
+        ;
+
+        $format = '%R ' === $format ? '0' : $format;
+
+        return $i->format(rtrim($format));
     }
 }

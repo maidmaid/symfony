@@ -84,4 +84,44 @@ EODUMP;
             array('2017-04-30 00:00:00.000000', '+02:00', '2017-04-30 00:00:00.000000 +02:00'),
         );
     }
+
+    /**
+     * @dataProvider provideIntervals
+     */
+    public function testCastInterval($interval_spec, $invert, $expected)
+    {
+        $interval = new \DateInterval($interval_spec);
+        $interval->invert = $invert;
+
+        $xDump = <<<EODUMP
+DateInterval {
+  interval: "$expected"
+}
+EODUMP;
+
+        $this->assertDumpMatchesFormat($xDump, $interval);
+    }
+
+    public function provideIntervals()
+    {
+        return array(
+            array('PT0S', 0, '0'),
+            array('PT1S', 0, '+ 00:00:01'),
+            array('PT2M', 0, '+ 00:02:00'),
+            array('PT3H', 0, '+ 03:00:00'),
+            array('P4D', 0, '+ 4 day(s)'),
+            array('P5M', 0, '+ 5 month(s)'),
+            array('P6Y', 0, '+ 6 year(s)'),
+            array('P1Y2M3DT4H5M6S', 0, '+ 1 year(s) 2 month(s) 3 day(s) 04:05:06'),
+
+            array('PT0S', 1, '0'),
+            array('PT1S', 1, '- 00:00:01'),
+            array('PT2M', 1, '- 00:02:00'),
+            array('PT3H', 1, '- 03:00:00'),
+            array('P4D', 1, '- 4 day(s)'),
+            array('P5M', 1, '- 5 month(s)'),
+            array('P6Y', 1, '- 6 year(s)'),
+            array('P1Y2M3DT4H5M6S', 1, '- 1 year(s) 2 month(s) 3 day(s) 04:05:06'),
+        );
+    }
 }
