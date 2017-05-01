@@ -124,4 +124,48 @@ EODUMP;
             array('P1Y2M3DT4H5M6S', 1, '- 1 year(s) 2 month(s) 3 day(s) 04:05:06'),
         );
     }
+
+    /**
+     * @dataProvider provideTimeZone
+     */
+    public function testCastTimeZone($timezone, $expected)
+    {
+        $interval = new \DateTimeZone($timezone);
+
+        $xDump = <<<EODUMP
+DateTimeZone {
+  timezone: "$expected"
+}
+EODUMP;
+
+        $this->assertDumpMatchesFormat($xDump, $interval);
+    }
+
+    public function provideTimeZone()
+    {
+        return array(
+            // type 1 (UTC offset)
+            array('-12:00', '-12:00'),
+            array('+00:00', '+00:00'),
+            array('+14:00', '+14:00'),
+
+            // type 2 (timezone abbreviation)
+            array('GMT', '+00:00'),
+            array('a', '+01:00'),
+            array('b', '+02:00'),
+            array('z', '+00:00'),
+
+            // type 3 (timezone identifier)
+            array('Africa/Tunis', 'Africa/Tunis (+01:00)'),
+            array('America/Panama', 'America/Panama (-05:00)'),
+            array('Antarctica/Troll', 'Antarctica/Troll (+02:00)'),
+            array('Arctic/Longyearbyen', 'Arctic/Longyearbyen (+02:00)'),
+            array('Asia/Jerusalem', 'Asia/Jerusalem (+03:00)'),
+            array('Atlantic/Canary', 'Atlantic/Canary (+01:00)'),
+            array('Australia/Perth', 'Australia/Perth (+08:00)'),
+            array('Europe/Zurich', 'Europe/Zurich (+02:00)'),
+            array('Indian/Cocos', 'Indian/Cocos (+06:30)'),
+            array('Pacific/Tahiti', 'Pacific/Tahiti (-10:00)'),
+        );
+    }
 }
