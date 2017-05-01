@@ -31,7 +31,7 @@ class DateCaster
             .($location ? ($d->format('I') ? "\nDST On" : "\nDST Off") : '');
 
         $a = array();
-        $a[$prefix.'date'] = new ConstStub($d->format('Y-m-d H:i:s.u '.($location ? 'e (P)' : 'P')), $title);
+        $a[$prefix.'date'] = new ConstStub($d->format('Y-m-d H:i:s.u ').self::formatTimeZone($d->getTimezone()), $title);
 
         $stub->class .= $d->format(' @U');
 
@@ -61,5 +61,21 @@ class DateCaster
         $format = '%R ' === $format ? '0' : $format;
 
         return $i->format(rtrim($format));
+    }
+
+    public static function castTimeZone(\DateTimeZone $z, array $a, Stub $stub, $isNested, $filter)
+    {
+        $prefix = Caster::PREFIX_VIRTUAL;
+
+        $a = array(
+            $prefix.'timezone' => self::formatTimeZone($z),
+        );
+
+        return $a;
+    }
+
+    private static function formatTimeZone(\DateTimeZone $z)
+    {
+        return (new \Datetime('now', $z))->format($z->getLocation() ? 'e (P)' : 'P');
     }
 }
