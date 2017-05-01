@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
-use DateTime;
-use DateTimeInterface;
 use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
@@ -22,14 +20,14 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DateCaster
 {
-    public static function castDate(DateTimeInterface $d, array $a, Stub $stub, $isNested, $filter)
+    public static function castDate(\DateTimeInterface $d, array $a, Stub $stub, $isNested, $filter)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
         $a = array();
         $a[$prefix.'date'] = $d->format('Y-m-d H:i:s.u');
         $a[$prefix.'timezone'] = $d->format('P (e)');
-        $a[$prefix.'Δnow'] = (new DateTime('now', $d->getTimezone()))->diff($d)->format('%R %yy %mm %dd %H:%I:%S');
+        $a[$prefix.'Δnow'] = (new \DateTime('now', $d->getTimezone()))->diff($d)->format('%R %yy %mm %dd %H:%I:%S');
 
         if (!($filter & Caster::EXCLUDE_VERBOSE) && !$isNested) {
             $a[$prefix.'literal'] = $d->format('l, j F Y');
