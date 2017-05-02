@@ -25,14 +25,16 @@ class DateCaster
         $prefix = Caster::PREFIX_VIRTUAL;
 
         $a = array();
-        $a[$prefix.'date'] = $d->format('Y-m-d H:i:s.u');
-        $a[$prefix.'timezone'] = $d->format('P (e)');
-        $a[$prefix.'Δnow'] = (new \DateTime('now', $d->getTimezone()))->diff($d)->format('%R %yy %mm %dd %H:%I:%S');
-
-        if (!($filter & Caster::EXCLUDE_VERBOSE) && !$isNested) {
-            $a[$prefix.'literal'] = $d->format('l, j F Y');
-            $a[$prefix.'timestamp'] = $d->getTimestamp();
-        }
+        $a[$prefix.'date'] = new ConstStub(
+            $d->format('Y-m-d H:i:s.u'),
+            sprintf(
+                "literal: %s\ntimestamp: %s\nΔnow: %s",
+                $d->format('l, j F Y'),
+                $d->getTimestamp(),
+                (new \DateTime('now', $d->getTimezone()))->diff($d)->format('%R %yy %mm %dd %H:%I:%S')
+            )
+        );
+        $a[$prefix.'timezone'] = $d->getTimezone();
 
         return $a;
     }
