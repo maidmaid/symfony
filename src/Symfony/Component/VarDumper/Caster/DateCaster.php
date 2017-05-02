@@ -26,15 +26,15 @@ class DateCaster
 
         $a = array();
         $a[$prefix.'date'] = new ConstStub(
-            $d->format('Y-m-d H:i:s.u'),
+            $d->format('Y-m-d H:i:s.u P'),
             sprintf(
-                "literal: %s\ntimestamp: %s\nΔnow: %s",
+                "literal: %s\nΔnow: %s",
                 $d->format('l, j F Y'),
-                $d->getTimestamp(),
-                (new \DateTime('now', $d->getTimezone()))->diff($d)->format('%R %yy %mm %dd %H:%I:%S')
+                (new \DateTime())->diff($d)->format('%R %yy %mm %dd %H:%I:%S')
             )
         );
-        $a[$prefix.'timezone'] = $d->getTimezone();
+
+        $stub->class .= $d->format(' @U');
 
         return $a;
     }
