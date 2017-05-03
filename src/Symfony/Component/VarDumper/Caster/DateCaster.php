@@ -26,7 +26,7 @@ class DateCaster
 
         $a = array();
         $a[$prefix.'date'] = new ConstStub(
-            $d->format('Y-m-d H:i:s.u P'),
+            $d->format('Y-m-d H:i:s.u '.($d->getTimeZone()->getLocation() ? 'P (e)' : 'P')),
             sprintf(
                 "literal: %s\nΔnow: %s",
                 $d->format('l, j F Y'),

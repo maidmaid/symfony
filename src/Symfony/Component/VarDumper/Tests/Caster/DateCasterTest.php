@@ -21,20 +21,30 @@ class DateCasterTest extends TestCase
 {
     use VarDumperTestTrait;
 
-    public function testCastDate()
+    /**
+     * @dataProvider provideDates
+     */
+    public function testCastDate($time, $timezone, $expexted)
     {
-        $date = new \DateTime('2017-04-30 00:00:00.000000', new \DateTimeZone('Europe/Zurich'));
+        $date = (new \DateTime($time))
+            ->setTimezone(new \DateTimeZone($timezone))
+        ;
 
-        $xDump = <<<'EODUMP'
-DateTime {
-  date: "2017-04-30 00:00:00.000000"
-  timezone: "+02:00 (Europe/Zurich)"
-  Δnow: "%s"
-  literal: "Sunday, 30 April 2017"
-  timestamp: 1493503200
+        $xDump = <<<EODUMP
+DateTime @1493503200 {
+  date: $expexted
 }
 EODUMP;
 
         $this->assertDumpMatchesFormat($xDump, $date);
+    }
+
+    public function provideDates()
+    {
+        return array(
+            array('@1493503200', 'Europe/Zurich', '2017-04-30 00:00:00.000000 +02:00 (Europe/Zurich)'),
+            array('2017-04-30 00:00:00.000000', 'Europe/Zurich', '2017-04-30 00:00:00.000000 +02:00 (Europe/Zurich)'),
+            array('2017-04-30 00:00:00.000000', '+02:00', '2017-04-30 00:00:00.000000 +02:00')
+        );
     }
 }
