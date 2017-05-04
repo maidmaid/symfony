@@ -26,9 +26,11 @@ class DateCasterTest extends TestCase
      */
     public function testCastDate($time, $timezone, $expexted)
     {
-        $date = (new \DateTime($time))
-            ->setTimezone(new \DateTimeZone($timezone))
-        ;
+        if ((defined('HHVM_VERSION_ID') || PHP_VERSION_ID <= 50509) && preg_match('/[\+|\-]\d{2}:\d{2}/', $timezone)) {
+            $this->markTestSkipped('DateTimeZone GMT offsets are supported since 5.5.10. See https://github.com/facebook/hhvm/issues/5875 for HHVM.');
+        }
+
+        $date = new \DateTime($time, new \DateTimeZone($timezone));
 
         $xDump = <<<EODUMP
 DateTime @1493503200 {
@@ -42,8 +44,7 @@ EODUMP;
     public function provideDates()
     {
         return array(
-            array('@1493503200', 'Europe/Zurich', '2017-04-30 00:00:00.000000 +02:00 (Europe/Zurich)'),
-            array('2017-04-30 00:00:00.000000', 'Europe/Zurich', '2017-04-30 00:00:00.000000 +02:00 (Europe/Zurich)'),
+            array('2017-04-30 00:00:00.000000', 'Europe/Zurich', '2017-04-30 00:00:00.000000 Europe/Zurich (+02:00)'),
             array('2017-04-30 00:00:00.000000', '+02:00', '2017-04-30 00:00:00.000000 +02:00'),
         );
     }
