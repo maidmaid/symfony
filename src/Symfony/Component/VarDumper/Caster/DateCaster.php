@@ -28,9 +28,10 @@ class DateCaster
         $a[$prefix.'date'] = new ConstStub(
             $d->format('Y-m-d H:i:s.u '.($d->getTimeZone()->getLocation() ? 'e (P)' : 'P')),
             sprintf(
-                "literal: %s\nΔnow: %s",
+                "literal: %s\nΔnow: %s\nDST: %s",
                 $d->format('l, j F Y'),
-                (new \DateTime())->diff($d)->format('%R %yy %mm %dd %H:%I:%S')
+                (new \DateTime())->diff($d)->format('%R %yy %mm %dd %H:%I:%S'),
+                $d->format('I') ? 'yes' : 'no'
             )
         );
 
