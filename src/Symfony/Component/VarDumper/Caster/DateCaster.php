@@ -23,17 +23,15 @@ class DateCaster
     public static function castDate(\DateTimeInterface $d, array $a, Stub $stub, $isNested, $filter)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
+        $location = $d->getTimezone()->getLocation();
+        $fromNow = (new \DateTime())->diff($d);
+
+        $title = $d->format('l, j F Y')
+            ."\n".$fromNow->format('%R').(ltrim($fromNow->format('%yy %mm %dd %H:%I:%Ss'), ' 0ymd:s') ?: '0s').' from now'
+            .($location ? ($d->format('I') ? "\nDST On" : "\nDST Off") : '');
 
         $a = array();
-        $a[$prefix.'date'] = new ConstStub(
-            $d->format('Y-m-d H:i:s.u '.($d->getTimeZone()->getLocation() ? 'e (P)' : 'P')),
-            sprintf(
-                "literal: %s\nΔnow: %s\nDST: %s",
-                $d->format('l, j F Y'),
-                (new \DateTime())->diff($d)->format('%R %yy %mm %dd %H:%I:%S'),
-                $d->format('I') ? 'yes' : 'no'
-            )
-        );
+        $a[$prefix.'date'] = new ConstStub($d->format('Y-m-d H:i:s.u '.($location ? 'e (P)' : 'P')), $title);
 
         $stub->class .= $d->format(' @U');
 
