@@ -26,7 +26,7 @@ class DateCaster
         $location = $d->getTimezone()->getLocation();
         $fromNow = (new \DateTime())->diff($d);
 
-        $title = $d->format('l, j F Y')
+        $title = $d->format('l, F j, Y')
             ."\n".$fromNow->format('%R').(ltrim($fromNow->format('%yy %mm %dd %H:%I:%Ss'), ' 0ymd:s') ?: '0s').' from now'
             .($location ? ($d->format('I') ? "\nDST On" : "\nDST Off") : '');
 

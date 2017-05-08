@@ -62,7 +62,7 @@ Symfony\Component\VarDumper\Caster\ConstStub {
   +type: "ref"
   +class: "2017-08-30 00:00:00.000000 Europe/Zurich (+02:00)"
   +value: """
-    Wednesday, 30 August 2017\n
+    Wednesday, August 30, 2017\n
     +%a from now\n
     DST On
     """
